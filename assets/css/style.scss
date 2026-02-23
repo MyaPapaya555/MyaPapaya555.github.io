@@ -1,0 +1,197 @@
+/* =========================
+   MTG LAND COLOR PALETTE
+   ========================= */
+
+$white-mana: #f4f1e8;
+$blue-mana: #4aa3df;
+$black-mana: #2b2b2f;
+$red-mana: #e45757;
+$green-mana: #4caf7a;
+
+$accent-pink: #f7a8c4;
+$accent-lavender: #cdb4f6;
+
+$bg-main: #fff9fc;
+$text-main: #2a2a2a;
+
+/* =========================
+   GLOBAL STYLES
+   ========================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  background: $bg-main;
+  color: $text-main;
+  line-height: 1.6;
+}
+
+/* Soft bubbly headings */
+h1, h2, h3, h4 {
+  font-family: "Poppins", "Inter", sans-serif;
+  letter-spacing: 0.03em;
+  color: $black-mana;
+}
+
+/* =========================
+   NAVBAR
+   ========================= */
+
+.navbar {
+  background: linear-gradient(
+    90deg,
+    $white-mana,
+    lighten($accent-pink, 10%)
+  );
+  padding: 1rem 2rem;
+  border-bottom: 3px solid $accent-lavender;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .logo {
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: $black-mana;
+  }
+
+  a {
+    text-decoration: none;
+    color: $text-main;
+    margin-left: 1.5rem;
+    font-weight: 500;
+
+    &:hover {
+      color: $blue-mana;
+    }
+  }
+}
+
+/* =========================
+   BUTTONS
+   ========================= */
+
+.button {
+  border: none;
+  border-radius: 999px;
+  padding: 0.6rem 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &--primary {
+    background: $accent-pink;
+    color: white;
+
+    &:hover {
+      background: darken($accent-pink, 8%);
+      transform: translateY(-1px);
+    }
+  }
+
+  &--mana-blue {
+    background: $blue-mana;
+    color: white;
+  }
+
+  &--mana-green {
+    background: $green-mana;
+    color: white;
+  }
+}
+
+/* =========================
+   CARD / ALTER PREVIEW
+   ========================= */
+
+.card {
+  background: white;
+  border-radius: 20px;
+  padding: 1.2rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.12);
+  }
+
+  &__image {
+    width: 100%;
+    border-radius: 14px;
+    margin-bottom: 0.8rem;
+  }
+
+  &__title {
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+
+  &__meta {
+    font-size: 0.9rem;
+    color: darken($text-main, 20%);
+  }
+}
+
+/* =========================
+   GRID LAYOUT
+   ========================= */
+
+.container {
+  width: min(1200px, 92%);
+  margin: 0 auto;
+}
+
+.grid {
+  display: grid;
+  gap: 1.5rem;
+
+  &--cards {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+}
+
+/* =========================
+   FOOTER
+   ========================= */
+
+.footer {
+  margin-top: 3rem;
+  padding: 2rem 0;
+  background: linear-gradient(
+    180deg,
+    lighten($accent-lavender, 12%),
+    $white-mana
+  );
+  text-align: center;
+  font-size: 0.9rem;
+  color: darken($text-main, 15%);
+}
+
+/* =========================
+   UTILITY CLASSES
+   ========================= */
+
+.mana-bar {
+  display: flex;
+  height: 6px;
+  border-radius: 999px;
+  overflow: hidden;
+
+  div {
+    flex: 1;
+  }
+
+  .white { background: $white-mana; }
+  .blue { background: $blue-mana; }
+  .black { background: $black-mana; }
+  .red { background: $red-mana; }
+  .green { background: $green-mana; }
+}
