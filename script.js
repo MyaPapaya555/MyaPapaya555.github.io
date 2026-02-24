@@ -32,13 +32,3 @@ window.addEventListener("scroll", () => {
 
   lastScroll = currentScroll;
 });
-
-// Example: toggle commissions closed
-const commissionsClosed = true; // set dynamically if needed
-const commissionForm = document.getElementById('commission-form');
-
-if (commissionsClosed) {
-  commissionForm.classList.add('commission-closed');
-} else {
-  commissionForm.classList.remove('commission-closed');
-}
