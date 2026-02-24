@@ -1,1 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Card Reviews</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+    }
+    #referralTab {
+      max-width: 700px;
+      margin: auto;
+    }
+    h2, h3 {
+      text-align: center;
+      color: #333;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: #f8f8f8;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    form input, form textarea {
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+    }
+    form textarea {
+      resize: none;
+      height: 80px;
+    }
+    form button {
+      padding: 10px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1em;
+    }
+    #reviewsContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 30px;
+    }
+    .reviewCard {
+      background: #f2f2f2;
+      padding: 15px;
+      border-radius: 6px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+    .reviewCard p {
+      margin: 5px 0;
+    }
+    @media(max-width: 480px){
+      form, #referralTab {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
 
+<div id="referralTab">
+  <h2>Share Your Card Review</h2>
+
+  <!-- Submission Form -->
+  <form id="referralForm">
+    <input type="text" id="userName" placeholder="Your Name" required>
+    <textarea id="reviewText" placeholder="Write your review..." required></textarea>
+    <button type="submit">Submit Review</button>
+  </form>
+
+  <!-- Display Approved Reviews -->
+  <h3>What Others Are Saying:</h3>
+  <div id="reviewsContainer"></div>
+</div>
+
+<script>
+const form = document.getElementById('referralForm');
+const container = document.getElementById('reviewsContainer');
+
+// Replace with your Google Apps Script Web App URL
+const GOOGLE_SHEET_API = "https://script.google.com/macros/s/AKfycbyzZzZBYOWkmQhjf5FO1OPXc_auw5gP8x403hcWfD8_qF0Nz5O3XSv1QBz7E4GxMPM6/exec";
+
+// Submit review
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const name = document.getElementById('userName').value.trim();
+  const review = document.getElementById('reviewText').value.trim();
+  if(!name || !review) return;
+
+  try {
+    await fetch(GOOGLE_SHEET_API, {
+      method: 'POST',
+      body: JSON.stringify({name, review}),
+      headers: {'Content-Type': 'application/json'}
+    });
+    alert("Thank you! Your review has been submitted for approval.");
+    form.reset();
+    loadReviews();
+  } catch(err) {
+    console.error(err);
+    alert("Error submitting review. Please try again.");
+  }
+});
+
+// Load approved reviews
+async function loadReviews() {
+  try {
+    const response = await fetch(GOOGLE_SHEET_API);
+    const reviews = await response.json();
+    container.innerHTML = '';
+
+    if(reviews.length === 0){
+      container.innerHTML = "<p>No reviews yet. Be the first to share!</p>";
+      return;
+    }
+
+    reviews.reverse().forEach(r => {
+      const div = document.createElement('div');
+      div.classList.add('reviewCard');
+      div.innerHTML = `
+        <p><strong>${r.name}</strong> <span style="color:#555;font-size:0.85em;">(${new Date(r.timestamp).toLocaleDateString()})</span></p>
+        <p>${r.review}</p>
+      `;
+      container.appendChild(div);
+    });
+  } catch(err){
+    console.error("Error loading reviews:", err);
+    container.innerHTML = "<p>Unable to load reviews.</p>";
+  }
+}
+
+// Auto-refresh every 60 seconds
+loadReviews();
+setInterval(loadReviews, 60000);
+</script>
+
+</body>
+</html>
