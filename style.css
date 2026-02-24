@@ -199,3 +199,46 @@ footer {
   background: linear-gradient(#ffffff, #f7f0ff);
   border-top: 1px solid var(--border-soft);
 }
+/* =========================
+   LIGHTBOX
+   ========================= */
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 20, 25, 0.85);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  backdrop-filter: blur(6px);
+  padding: 2rem;
+}
+
+.lightbox.active {
+  display: flex;
+  animation: fadeIn .25s ease;
+}
+
+.lightbox-img {
+  max-width: min(100%, 900px);
+  max-height: 85vh;
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+  background: white;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 25px;
+  right: 30px;
+  font-size: 2rem;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
