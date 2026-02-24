@@ -1,0 +1,64 @@
+<form id="referralForm">
+  <input type="text" id="userName" placeholder="Your name" required>
+  <textarea id="reviewText" placeholder="Your review" required></textarea>
+  <button type="submit">Submit</button>
+</form>
+
+<h3>Reviews:</h3>
+<div id="reviewsContainer"></div>
+
+<script>
+const form = document.getElementById('referralForm');
+const container = document.getElementById('reviewsContainer');
+const GOOGLE_SHEET_API = "YOUR_WEB_APP_URL_HERE"; // replace with your script URL
+
+// Submit review
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const name = document.getElementById('userName').value;
+  const review = document.getElementById('reviewText').value;
+
+  await fetch(GOOGLE_SHEET_API, {
+    method: 'POST',
+    body: JSON.stringify({name, review}),
+    headers: {'Content-Type': 'application/json'}
+  });
+
+  alert("Review submitted! Waiting for approval.");
+  form.reset();
+  loadReviews();
+});
+
+// Load approved reviews
+async function loadReviews() {
+  const response = await fetch(GOOGLE_SHEET_API);
+  const reviews = await response.json();
+  container.innerHTML = '';
+
+  reviews.forEach(r => {
+    const div = document.createElement('div');
+    div.classList.add('reviewCard');
+    div.innerHTML = `
+      <p><strong>${r.name}</strong> (${new Date(r.timestamp).toLocaleDateString()}):</p>
+      <p>${r.review}</p>
+      <hr>
+    `;
+    container.appendChild(div);
+  });
+}
+
+// Initial load
+loadReviews();
+</script>
+
+<style>
+#reviewsContainer {
+  margin-top: 20px;
+}
+.reviewCard {
+  padding: 10px;
+  border-radius: 6px;
+  background: #f2f2f2;
+  margin-bottom: 10px;
+}
+</style>
