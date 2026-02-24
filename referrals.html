@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="stylesheet" href="style.css">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Card Reviews</title>
@@ -61,39 +60,19 @@
       border-radius: 6px;
       box-shadow: 0 1px 4px rgba(0,0,0,0.1);
     }
-    .reviewCard p {
-      margin: 5px 0;
-    }
-    @media(max-width: 480px){
-      form, #referralTab {
-        padding: 15px;
-      }
-    }
   </style>
 </head>
 <body>
-  
-<header>
-  <h1>☕ Referrals ☕</h1>
-  <nav>
-    <a href="index.html">Gallery</a>
-    <a href="about.html">About</a>
-    <a href="commissions.html">Commissions</a>
-    <a href="referrals.html">Referrals</a>
-  </nav>
-</header>
-  
+
 <div id="referralTab">
   <h2>Share Your Card Review</h2>
 
-  <!-- Submission Form -->
   <form id="referralForm">
     <input type="text" id="userName" placeholder="Your Name" required>
     <textarea id="reviewText" placeholder="Write your review..." required></textarea>
     <button type="submit">Submit Review</button>
   </form>
 
-  <!-- Display Approved Reviews -->
   <h3>What Others Are Saying:</h3>
   <div id="reviewsContainer"></div>
 </div>
@@ -102,10 +81,9 @@
 const form = document.getElementById('referralForm');
 const container = document.getElementById('reviewsContainer');
 
-// Replace with your Google Apps Script Web App URL
-const GOOGLE_SHEET_API = "https://script.google.com/macros/s/AKfycbyzZzZBYOWkmQhjf5FO1OPXc_auw5gP8x403hcWfD8_qF0Nz5O3XSv1QBz7E4GxMPM6/exec";
+// 🔁 Replace with your deployed Google Apps Script URL
+const GOOGLE_SHEET_API = "YOUR_WEB_APP_URL_HERE";
 
-// Submit review
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   const name = document.getElementById('userName').value.trim();
@@ -113,29 +91,35 @@ form.addEventListener('submit', async (e) => {
   if(!name || !review) return;
 
   try {
-    await fetch(GOOGLE_SHEET_API, {
+    const response = await fetch(GOOGLE_SHEET_API, {
       method: 'POST',
       body: JSON.stringify({name, review}),
       headers: {'Content-Type': 'application/json'}
     });
+
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(`HTTP ${response.status}: ${text}`);
+    }
+
     alert("Thank you! Your review has been submitted for approval.");
     form.reset();
     loadReviews();
-  } catch(err) {
-    console.error(err);
-    alert("Error submitting review. Please try again.");
+
+  } catch (err) {
+    console.error("Submission error:", err);
+    alert("Error submitting review — check console for details.");
   }
 });
 
-// Load approved reviews
 async function loadReviews() {
   try {
     const response = await fetch(GOOGLE_SHEET_API);
     const reviews = await response.json();
     container.innerHTML = '';
 
-    if(reviews.length === 0){
-      container.innerHTML = "<p>No reviews yet. Be the first to share!</p>";
+    if (!reviews || reviews.length === 0) {
+      container.innerHTML = "<p>No reviews yet. Be the first!</p>";
       return;
     }
 
@@ -143,18 +127,17 @@ async function loadReviews() {
       const div = document.createElement('div');
       div.classList.add('reviewCard');
       div.innerHTML = `
-        <p><strong>${r.name}</strong> <span style="color:#555;font-size:0.85em;">(${new Date(r.timestamp).toLocaleDateString()})</span></p>
+        <p><strong>${r.name}</strong> <em>(${new Date(r.timestamp).toLocaleDateString()})</em></p>
         <p>${r.review}</p>
       `;
       container.appendChild(div);
     });
-  } catch(err){
-    console.error("Error loading reviews:", err);
-    container.innerHTML = "<p>Unable to load reviews.</p>";
+
+  } catch (err) {
+    console.error("Loading error:", err);
   }
 }
 
-// Auto-refresh every 60 seconds
 loadReviews();
 setInterval(loadReviews, 60000);
 </script>
