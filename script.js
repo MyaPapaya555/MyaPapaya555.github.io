@@ -33,18 +33,18 @@ window.addEventListener("scroll", () => {
   lastScroll = currentScroll;
 });
 
-// Toggle commissions open/closed
-const COMMISSIONS_OPEN = false; // ← change this to true when you want to open
+const COMMISSIONS_OPEN = false; // set true when open
 
 window.addEventListener('DOMContentLoaded', () => {
   const status = document.getElementById('commission-status');
   const form = document.getElementById('commission-form');
+  const overlay = document.getElementById('form-overlay');
 
   if (COMMISSIONS_OPEN) {
-    status.style.display = 'none';  // hide "closed" box
-    form.style.display = 'block';    // show form
+    status.style.display = 'none';   // hide closed box
+    overlay.style.display = 'none';  // remove overlay
   } else {
-    status.style.display = 'block';  // show "closed" box
-    form.style.display = 'none';     // hide form
+    status.style.display = 'block';  // show closed box
+    overlay.style.display = 'block'; // show overlay to block form interaction
   }
 });
