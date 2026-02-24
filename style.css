@@ -43,14 +43,18 @@ section {
    ========================= */
 
 header {
-  background: var(--surface);
-  color: var(--text-main);
-  padding: 1rem 0;
-  text-align: center;
-  border-bottom: 1px solid var(--border-soft);
-  position: sticky;
-  top: 0;
-  backdrop-filter: blur(8px);
+   background: var(--surface);
+   color: var(--text-main);
+   padding: 1rem 0;
+   text-align: center;
+   border-bottom: 1px solid var(--border-soft);
+   position: sticky;
+   top: 0;
+   backdrop-filter: blur(8px);
+   position: sticky; /* keeps it in view until scrolling past */
+   top: 0;           /* distance from the top */
+   z-index: 1000;    /* make sure it's above cards */
+   transition: transform 0.3s ease; /* smooth movement */
 }
 
 nav a {
