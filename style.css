@@ -148,6 +148,7 @@ nav a:hover::after {
 .grid img:hover {
   transform: translateY(-6px);
   box-shadow: 0 16px 36px rgba(0,0,0,0.18);
+   z-index: 10;
 }
 
 /* =========================
