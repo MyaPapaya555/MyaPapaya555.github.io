@@ -290,3 +290,25 @@ footer {
   border-radius: 50%;
   box-shadow: 0 6px 18px rgba(0,0,0,0.15);
 }
+
+.commission-status {
+  border: 4px solid #ff6f91; /* fun pink outline */
+  border-radius: 16px;
+  background: linear-gradient(135deg, #ffe6f0, #fff0f5); /* soft pastel pink/purple */
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+  margin: 2rem auto;
+  max-width: 600px;
+  font-family: 'Arial', sans-serif;
+}
+
+.commission-status.closed h2 {
+  color: #ff1a5e; /* bold warning pink */
+  margin-bottom: 10px;
+}
+
+.commission-status p {
+  color: #333;
+  font-size: 1.1rem;
+}
