@@ -32,6 +32,7 @@ window.addEventListener("scroll", () => {
 
   lastScroll = currentScroll;
 });
+
 // ===== REFERRALS SYSTEM =====
 
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzFYz3-ECI4zpDHkyU1StPKxKa0LyMB1vxq9nVPjiapA-g2uG-8FebkJBMrsOKAadNG/exec";
