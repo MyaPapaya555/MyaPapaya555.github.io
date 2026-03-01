@@ -37,62 +37,34 @@ window.addEventListener("scroll", () => {
 
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzFYz3-ECI4zpDHkyU1StPKxKa0LyMB1vxq9nVPjiapA-g2uG-8FebkJBMrsOKAadNG/exec";
 
-const form = document.getElementById("reviewForm");
-const message = document.getElementById("formMessage");
-const reviewsContainer = document.getElementById("reviewsContainer");
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-// Submit review
-if (form) {
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const data = {
-      name: document.getElementById("name").value,
-      review: document.getElementById("review").value
-    };
-
-    try {
-      await fetch(SCRIPT_URL, {
-        method: "POST",
-        body: JSON.stringify(data)
-      });
-
-      message.textContent = "✅ Thank you! Your review has been submitted for approval.";
-      form.reset();
-      loadReviews();
-
-    } catch (err) {
-      console.error("Submission error:", err);
-      message.textContent = "❌ Error submitting review.";
-    }
-  });
-}
-
-// Load reviews
-async function loadReviews() {
-  if (!reviewsContainer) return;
+  const data = {
+    name: document.getElementById("name").value,
+    review: document.getElementById("review").value
+  };
 
   try {
-    const res = await fetch(SCRIPT_URL);
-    const reviews = await res.json();
-
-    reviewsContainer.innerHTML = "";
-
-    reviews.forEach(r => {
-      if (r.status === "approved") {
-        const div = document.createElement("div");
-        div.className = "review-card";
-        div.innerHTML = `
-          <h4>${r.name}</h4>
-          <p>${r.review}</p>
-        `;
-        reviewsContainer.appendChild(div);
-      }
+    const response = await fetch(SCRIPT_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
     });
 
+    const text = await response.text();
+    console.log("Server response:", text);
+
+    message.textContent = "✅ Thank you! Your review has been submitted for approval.";
+    form.reset();
+
   } catch (err) {
-    console.error("Loading error:", err);
+    console.error("Submission error:", err);
+    message.textContent = "❌ Error submitting review.";
   }
+});
 }
 
 loadReviews();
