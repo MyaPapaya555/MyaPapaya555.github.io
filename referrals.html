@@ -1,67 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Card Reviews</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f9f9f9;
-      margin: 0;
-      padding: 20px;
-    }
-    #referralTab {
-      max-width: 700px;
-      margin: auto;
-    }
-    h2, h3 {
-      text-align: center;
-      color: #333;
-    }
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      background: #f8f8f8;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    form input, form textarea {
-      padding: 10px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      font-size: 1em;
-    }
-    form textarea {
-      resize: none;
-      height: 80px;
-    }
-    form button {
-      padding: 10px;
-      background: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 1em;
-    }
-    #reviewsContainer {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      margin-top: 30px;
-    }
-    .reviewCard {
-      background: #f2f2f2;
-      padding: 15px;
-      border-radius: 6px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Referrals</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
 </head>
   <header>
   <h1>☕ Referrals ☕</h1>
@@ -73,84 +17,27 @@
   </nav>
 </header>
 <body>
+<body>
+  <header class="page-header">
+    <h1>Customer Referrals</h1>
+    <p>Share your experience!</p>
+  </header>
 
-<div id="referralTab">
-  <h2>Share Your Card Review</h2>
+  <section class="referral-form-section">
+    <form id="reviewForm">
+      <input type="text" id="name" placeholder="Your name" required />
+      <textarea id="review" placeholder="Your review" required></textarea>
+      <button type="submit">Submit Review</button>
+    </form>
 
-  <form id="referralForm">
-    <input type="text" id="userName" placeholder="Your Name" required>
-    <textarea id="reviewText" placeholder="Write your review..." required></textarea>
-    <button type="submit">Submit Review</button>
-  </form>
+    <p id="formMessage"></p>
+  </section>
 
-  <h3>What Others Are Saying:</h3>
-  <div id="reviewsContainer"></div>
-</div>
+  <section class="reviews-section">
+    <h2>What People Are Saying</h2>
+    <div id="reviewsContainer"></div>
+  </section>
 
-<script>
-const form = document.getElementById('referralForm');
-const container = document.getElementById('reviewsContainer');
-
-// 🔁 Replace with your deployed Google Apps Script URL
-const GOOGLE_SHEET_API = "https://script.google.com/macros/s/AKfycbzvDE0AZK97qvfaOLZ21XjnTdpeFQ4m2PGuVHkHwvGRihVY-iXY9O0YHWRcjtkn5fl6/exec";
-
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const name = document.getElementById('userName').value.trim();
-  const review = document.getElementById('reviewText').value.trim();
-  if(!name || !review) return;
-
-  try {
-    const response = await fetch(GOOGLE_SHEET_API, {
-      method: 'POST',
-      body: JSON.stringify({name, review}),
-      headers: {'Content-Type': 'application/json'}
-    });
-
-    if (!response.ok) {
-      const text = await response.text();
-      throw new Error(`HTTP ${response.status}: ${text}`);
-    }
-
-    alert("Thank you! Your review has been submitted for approval.");
-    form.reset();
-    loadReviews();
-
-  } catch (err) {
-    console.error("Submission error:", err);
-    alert("Error submitting review — check console for details.");
-  }
-});
-
-async function loadReviews() {
-  try {
-    const response = await fetch(GOOGLE_SHEET_API);
-    const reviews = await response.json();
-    container.innerHTML = '';
-
-    if (!reviews || reviews.length === 0) {
-      container.innerHTML = "<p>No reviews yet. Be the first!</p>";
-      return;
-    }
-
-    reviews.reverse().forEach(r => {
-      const div = document.createElement('div');
-      div.classList.add('reviewCard');
-      div.innerHTML = `
-        <p><strong>${r.name}</strong> <em>(${new Date(r.timestamp).toLocaleDateString()})</em></p>
-        <p>${r.review}</p>
-      `;
-      container.appendChild(div);
-    });
-
-  } catch (err) {
-    console.error("Loading error:", err);
-  }
-}
-
-loadReviews();
-setInterval(loadReviews, 60000);
-</script>
-
+  <script src="script.js"></script>
 </body>
 </html>
