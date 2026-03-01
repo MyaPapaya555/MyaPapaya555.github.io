@@ -34,7 +34,7 @@ window.addEventListener("scroll", () => {
 });
 // ===== REFERRALS SYSTEM =====
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby0HfaIs0pvKG9oMnjUjNTlVSn52e3iKoNuVtAL6a0LLmOR7xlUj5bwUpFIPxgwnep4/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzFYz3-ECI4zpDHkyU1StPKxKa0LyMB1vxq9nVPjiapA-g2uG-8FebkJBMrsOKAadNG/exec";
 
 const form = document.getElementById("reviewForm");
 const message = document.getElementById("formMessage");
