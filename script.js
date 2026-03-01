@@ -33,4 +33,4 @@ window.addEventListener("scroll", () => {
   lastScroll = currentScroll;
 });
 
-const GOOGLE_SHEET_API = "https://script.google.com/macros/s/AKfycbwutJo9iMlKhRtLR_eUK0Noxmr5v-fJiWlsS8qixNqWp58m1bXqjWaK16cqUJ93-_hZ/exec";
+const GOOGLE_SHEET_API = "https://script.google.com/macros/s/AKfycbzvDE0AZK97qvfaOLZ21XjnTdpeFQ4m2PGuVHkHwvGRihVY-iXY9O0YHWRcjtkn5fl6/exec";
